@@ -45,3 +45,12 @@ For queries or issues, kindly open an issue on this repository.
 ## Note
 
 This example is intended for educational purposes and might not reflect a production-ready setup. Make sure to adapt it according to your needs and security considerations before deploying it in a production environment.
+
+
+for container
+sudo docker rm -f $(sudo docker ps -a -q)
+
+for images
+sudo docker image remove -f $(sudo docker images -a -q)
+
+sudo docker logs --tail 50 --follow --timestamps 0e97

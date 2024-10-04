@@ -1,4 +1,4 @@
-FROM python:alpine
+FROM python:3.11-alpine
 WORKDIR /app
 COPY ["requirements.txt", "/app/"]
 RUN pip install $(cat requirements.txt | grep -E "celery|redis")
