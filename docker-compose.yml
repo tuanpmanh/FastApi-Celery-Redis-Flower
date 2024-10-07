@@ -5,13 +5,20 @@ services:
       dockerfile: app.dockerfile
     restart: always
     ports:
-      - 8000:8000
+      - "8000:8000"
 
   redis:
     image: redis:alpine
+    # build:
+    #   context: .
+    #   dockerfile: redis.dockerfile
+    container_name: redis
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
     restart: always
     ports:
-      - 6379:6379
+      - "6379:6379"
 
   celery:
     build:
@@ -22,13 +29,14 @@ services:
       - redis
 
   flower:
-    image: mher/flower
-    command: celery -A tasks flower --basic-auth=test:test
-    environment:
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+#    image: mher/flower
+    build:
+      context: .
+      dockerfile: flower.dockerfile
+#    environment:
+#      - CELERY_BROKER_URL=redis://redis:6379/0
     restart: always
     ports:
-      - 5555:5555
+      - "5555:5555"
     depends_on:
       - celery

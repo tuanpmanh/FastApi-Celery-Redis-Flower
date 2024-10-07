@@ -54,3 +54,5 @@ for images
 sudo docker image remove -f $(sudo docker images -a -q)
 
 sudo docker logs --tail 50 --follow --timestamps 0e97
+
+sudo docker compose up -d
