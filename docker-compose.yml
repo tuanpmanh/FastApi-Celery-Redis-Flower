@@ -1,5 +1,6 @@
 services:
   app:
+    container_name: demo.app
     build:
       context: .
       dockerfile: app.dockerfile
@@ -9,18 +10,17 @@ services:
 
   redis:
     image: redis:alpine
-    # build:
-    #   context: .
-    #   dockerfile: redis.dockerfile
-    container_name: redis
-    command: redis-server /usr/local/etc/redis/redis.conf
+    container_name: demo.redis
+    hostname: redis
     volumes:
       - ./redis.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
     restart: always
     ports:
-      - "6379:6379"
+      - "127.0.0.1:6379:6379"
 
   celery:
+    container_name: demo.celery
     build:
       context: .
       dockerfile: celery_worker.dockerfile
@@ -29,12 +29,10 @@ services:
       - redis
 
   flower:
-#    image: mher/flower
+    container_name: demo.flower
     build:
       context: .
       dockerfile: flower.dockerfile
-#    environment:
-#      - CELERY_BROKER_URL=redis://redis:6379/0
     restart: always
     ports:
       - "5555:5555"
